@@ -8,4 +8,6 @@ public interface CategoryService {
 
     List<DrinkDto> getAllDrinksByCategory(int categoryId);
 
+    void deleteCategory(int categoryId);
+
 }

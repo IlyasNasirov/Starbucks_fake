@@ -14,9 +14,14 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalException {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    ResponseEntity<ExceptionResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    ResponseEntity<ExceptionResponse> handleEntityNotFoundException(NotFoundException ex) {
         return buildResponseEntity(ex, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DuplicateEntityException.class)
+    public ResponseEntity<ExceptionResponse> handleIllegalExceptions(DuplicateEntityException ex) {
+        return buildResponseEntity(ex, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

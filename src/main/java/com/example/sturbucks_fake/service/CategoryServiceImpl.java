@@ -26,4 +26,9 @@ public class CategoryServiceImpl implements CategoryService{
         return category.getDrinks().stream().map(drinkMapper::toDto).collect(Collectors.toList());
     }
 
+    public void deleteCategory(int categoryId){
+        CategoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
+        CategoryRepository.deleteById(categoryId);
+    }
+
 }

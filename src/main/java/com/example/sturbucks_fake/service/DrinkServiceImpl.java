@@ -1,9 +1,13 @@
 package com.example.sturbucks_fake.service;
 
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.exception.CategoryNotFoundException;
 import com.example.sturbucks_fake.exception.DrinkNotFoundException;
+import com.example.sturbucks_fake.exception.DuplicateEntityException;
 import com.example.sturbucks_fake.mapper.DrinkMapper;
+import com.example.sturbucks_fake.model.Category;
 import com.example.sturbucks_fake.model.Drink;
+import com.example.sturbucks_fake.repository.CategoryRepository;
 import com.example.sturbucks_fake.repository.DrinkRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,7 @@ import java.util.stream.Collectors;
 public class DrinkServiceImpl implements DrinkService {
 
     private DrinkRepository drinkRepository;
+    private CategoryRepository categoryRepository;
     private DrinkMapper drinkMapper;
 
     @Override
@@ -31,6 +36,11 @@ public class DrinkServiceImpl implements DrinkService {
 
     @Override
     public DrinkDto createDrink(DrinkDto drinkDto) {
+        categoryRepository.findById(drinkDto.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException(drinkDto.getCategoryId()));
+        if(drinkRepository.existsByName(drinkDto.getName())){
+            throw new DuplicateEntityException("Drink with this name already exists ");
+        }
         Drink drink = drinkMapper.toEntity(drinkDto);
         return drinkMapper.toDto(drinkRepository.save(drink));
     }

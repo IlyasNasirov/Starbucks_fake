@@ -34,7 +34,7 @@ public class Category {
      * связь одна категория много напитков
      */
     @OneToMany(mappedBy = "category",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}
+            cascade = {CascadeType.ALL}
             ,orphanRemoval = true
             ,fetch = FetchType.EAGER)
     private List<Drink> drinks;
