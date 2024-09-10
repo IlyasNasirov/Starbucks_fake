@@ -1,7 +1,9 @@
 package com.example.sturbucks_fake.service;
 
+import com.example.sturbucks_fake.dto.CategoryDto;
 import com.example.sturbucks_fake.dto.DrinkDto;
 import com.example.sturbucks_fake.exception.CategoryNotFoundException;
+import com.example.sturbucks_fake.exception.DuplicateEntityException;
 import com.example.sturbucks_fake.mapper.CategoryMapper;
 import com.example.sturbucks_fake.mapper.DrinkMapper;
 import com.example.sturbucks_fake.model.Category;
@@ -31,4 +33,12 @@ public class CategoryServiceImpl implements CategoryService{
         CategoryRepository.deleteById(categoryId);
     }
 
+    @Override
+    public CategoryDto createCategory(CategoryDto categoryDto) {
+        if(CategoryRepository.existsByName(categoryDto.getName())){
+            throw new DuplicateEntityException("Category with name "+categoryDto.getName()+" already exists");
+        }
+        Category category = categoryMapper.toEntity(categoryDto);
+        return categoryMapper.toDto(CategoryRepository.save(category));
+    }
 }

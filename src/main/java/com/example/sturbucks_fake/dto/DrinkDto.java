@@ -2,6 +2,7 @@ package com.example.sturbucks_fake.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.validation.constraints.AssertTrue;
@@ -18,7 +19,7 @@ public class DrinkDto {
     @NotNull(message = "Description cannot be null")
     private String description;
 
-    private boolean available=true;
+    private Boolean available;
 
     @Min(value = 1, message = "Price cannot be null")
     private long price;
