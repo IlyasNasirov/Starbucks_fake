@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,8 @@ public class Category {
      */
     @OneToMany(mappedBy = "category",
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}
-            ,orphanRemoval = true)
+            ,orphanRemoval = true
+            ,fetch = FetchType.EAGER)
     private List<Drink> drinks;
 
 }

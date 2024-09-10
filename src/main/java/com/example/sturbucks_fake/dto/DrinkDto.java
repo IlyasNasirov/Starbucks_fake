@@ -16,7 +16,8 @@ public class DrinkDto {
     @NotNull(message = "Description cannot be null")
     private String description;
 
-    @AssertTrue(message = "The drink must be available.")
-    private boolean available;
+    private boolean available=true;
+
+    private int categoryId;
 
 }

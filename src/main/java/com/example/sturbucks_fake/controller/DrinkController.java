@@ -2,6 +2,7 @@ package com.example.sturbucks_fake.controller;
 
 import com.example.sturbucks_fake.dto.DrinkDto;
 import com.example.sturbucks_fake.service.DrinkServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/drinks", produces = "application/json")
 @AllArgsConstructor
+@Tag(name = "Drink")
 public class DrinkController {
 
     private DrinkServiceImpl service;
