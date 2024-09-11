@@ -1,19 +1,26 @@
 package com.example.sturbucks_fake.service;
 
 import com.example.sturbucks_fake.dto.BucketDto;
+import com.example.sturbucks_fake.dto.BucketItemDto;
 import com.example.sturbucks_fake.dto.UserDto;
+import com.example.sturbucks_fake.exception.DrinkNotFoundException;
 import com.example.sturbucks_fake.exception.DuplicateEntityException;
 import com.example.sturbucks_fake.exception.UserNotFoundException;
+import com.example.sturbucks_fake.mapper.BucketItemMapper;
 import com.example.sturbucks_fake.mapper.BucketMapper;
 import com.example.sturbucks_fake.mapper.UserMapper;
 import com.example.sturbucks_fake.model.Bucket;
+import com.example.sturbucks_fake.model.BucketItem;
+import com.example.sturbucks_fake.model.Drink;
 import com.example.sturbucks_fake.model.User;
 import com.example.sturbucks_fake.repository.BucketRepository;
+import com.example.sturbucks_fake.repository.DrinkRepository;
 import com.example.sturbucks_fake.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,8 +29,10 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private BucketRepository bucketRepository;
+    private DrinkRepository drinkRepository;
     private UserMapper userMapper;
     private BucketMapper bucketMapper;
+    private BucketItemMapper bucketItemMapper;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -42,7 +51,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(userDto.getUsername())) {
             throw new DuplicateEntityException("Username already exists");
         }
-        Bucket bucket=new Bucket();
+        Bucket bucket = new Bucket();
         user.setBucket(bucket);
         bucket.setUser(user);
 
@@ -75,8 +84,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public BucketDto getBucket(int userId) {
+    public BucketDto getUserBucket(int userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
         return bucketMapper.toDto(user.getBucket());
+    }
+
+
+    @Override
+    public void addItemToBucket(int userId, int drinkId, int quantity) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Drink drink = drinkRepository.findById(drinkId).orElseThrow(() -> new DrinkNotFoundException(drinkId));
+        Bucket bucket = user.getBucket();
+
+        Optional<BucketItem> existingItem = bucket.getItems()
+                .stream()
+                .filter(item -> item.getDrink().equals(drink))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
+        } else {
+            BucketItem newItem = new BucketItem();
+            newItem.setDrink(drink);
+            newItem.setQuantity(quantity);
+            newItem.setBucket(bucket);
+            bucket.getItems().add(newItem);
+        }
+        bucketRepository.save(bucket);
+
     }
 }

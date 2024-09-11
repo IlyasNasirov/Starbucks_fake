@@ -7,6 +7,8 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 
@@ -14,10 +16,14 @@ import java.util.List;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI openAPI() {
+    public OpenAPI openAPI() throws UnknownHostException {
+
+        //Get hostname for foreign connection to swagger
+        String host = InetAddress.getLocalHost().getHostName();
+
         return new OpenAPI()
                 .servers(
-                        List.of(new Server().description("Local server").url("http://localhost:8080")
+                        List.of(new Server().description("rinnov34's server").url("http://" + host + ":8080")
                         )
                 )
                 .info(new Info()

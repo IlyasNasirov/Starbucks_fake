@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface CategoryService {
 
+    List<CategoryDto> getAllCategories();
+
     List<DrinkDto> getAllDrinksByCategory(int categoryId);
 
     void deleteCategory(int categoryId);

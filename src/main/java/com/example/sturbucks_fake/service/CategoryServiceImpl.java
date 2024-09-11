@@ -23,6 +23,11 @@ public class CategoryServiceImpl implements CategoryService{
     private DrinkMapper drinkMapper;
 
     @Override
+    public List<CategoryDto> getAllCategories() {
+        return CategoryRepository.findAll().stream().map(categoryMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
     public List<DrinkDto> getAllDrinksByCategory(int categoryId) {
         Category category= CategoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
         return category.getDrinks().stream().map(drinkMapper::toDto).collect(Collectors.toList());
