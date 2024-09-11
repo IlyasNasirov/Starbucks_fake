@@ -1,5 +1,6 @@
 package com.example.sturbucks_fake.controller;
 
+import com.example.sturbucks_fake.dto.BucketDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,6 +51,11 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         service.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{id}/bucket")
+    public ResponseEntity<BucketDto> getUserBuckets(@PathVariable int id) {
+        return ResponseEntity.ok(service.getBucket(id));
     }
 
 }

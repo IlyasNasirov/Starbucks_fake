@@ -38,7 +38,7 @@ public class Bucket {
     /**
      * Связь одна корзина много элементов
      */
-    @OneToMany(mappedBy = "bucket", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bucket", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<BucketItem> items;
 
 }

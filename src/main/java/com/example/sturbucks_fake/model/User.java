@@ -35,7 +35,7 @@ public class User {
     /**
      * связь один пользователь одна корзина
      */
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Bucket bucket;
 
 }

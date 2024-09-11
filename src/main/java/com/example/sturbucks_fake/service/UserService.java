@@ -1,5 +1,6 @@
 package com.example.sturbucks_fake.service;
 
+import com.example.sturbucks_fake.dto.BucketDto;
 import com.example.sturbucks_fake.dto.UserDto;
 
 import java.util.List;
@@ -15,5 +16,8 @@ public interface UserService {
     void deleteUser(int userId);
 
     UserDto updateUser(int userId, UserDto userDto);
+
+    BucketDto getBucket(int userId);
+
 
 }
