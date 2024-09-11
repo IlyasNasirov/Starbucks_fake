@@ -1,7 +1,7 @@
 package com.example.sturbucks_fake.controller;
 
-import com.example.sturbucks_fake.dto.DrinkDto;
-import com.example.sturbucks_fake.service.DrinkServiceImpl;
+import com.example.sturbucks_fake.dto.UserDto;
+import com.example.sturbucks_fake.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,36 +19,36 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "${baseUrl}/drinks", produces = "application/json")
+@RequestMapping(value = "${baseUrl}/users", produces = "application/json")
 @AllArgsConstructor
-@Tag(name = "Drink")
-public class DrinkController {
+@Tag(name = "User")
+public class UserController {
 
-    private DrinkServiceImpl service;
+    private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<DrinkDto>> getAllDrinks() {
-        return ResponseEntity.ok(service.getAllDrinks());
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        return ResponseEntity.ok(service.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DrinkDto> getDrinkById(@PathVariable int id) {
-        return ResponseEntity.ok(service.getDrinkById(id));
+    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
+        return ResponseEntity.ok(service.getUserById(id));
     }
 
     @PostMapping
-    public ResponseEntity<DrinkDto> createDrink(@Validated @RequestBody DrinkDto drinkDto) {
-        return new ResponseEntity<>(service.createDrink(drinkDto), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> createUser(@Validated @RequestBody UserDto userDto) {
+        return new ResponseEntity<>(service.createUser(userDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<DrinkDto> updateDrink(@PathVariable int id, @RequestBody DrinkDto drinkDto) {
-        return new ResponseEntity<>(service.updateDrink(id, drinkDto), HttpStatus.OK);
+    public ResponseEntity<UserDto> updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
+        return new ResponseEntity<>(service.updateUser(id, userDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDrink(@PathVariable int id) {
-        service.deleteDrink(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+        service.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

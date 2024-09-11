@@ -31,15 +31,14 @@ public class Bucket {
     /**
      * Связь один пользователь одна корзина
      */
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     /**
      * Связь одна корзина много элементов
      */
-    @OneToMany(mappedBy = "bucket",
-               cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "bucket", cascade = CascadeType.ALL)
     private List<BucketItem> items;
 
 }

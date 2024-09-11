@@ -33,10 +33,7 @@ public class Category {
     /**
      * связь одна категория много напитков
      */
-    @OneToMany(mappedBy = "category",
-            cascade = {CascadeType.ALL}
-            ,orphanRemoval = true
-            ,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Drink> drinks;
 
 }

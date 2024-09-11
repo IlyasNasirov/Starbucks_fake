@@ -30,14 +30,14 @@ public class BucketItem {
     /**
      * связь много элементов одна корзина
      */
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "bucket_id")
     private Bucket bucket;
 
     /**
      * связь много элементов один напиток
      */
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "drink_id")
     private Drink drink;
 

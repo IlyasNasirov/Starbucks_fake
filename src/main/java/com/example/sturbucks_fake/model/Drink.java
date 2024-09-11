@@ -50,7 +50,7 @@ public class Drink {
     /**
      * связь один напиток у многих элементов корзины
      */
-    @OneToMany(mappedBy = "drink",cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,CascadeType.REMOVE})
+    @OneToMany(mappedBy = "drink",cascade = CascadeType.ALL)
     private List<BucketItem> bucketItems;
 
 }

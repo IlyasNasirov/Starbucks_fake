@@ -35,8 +35,7 @@ public class User {
     /**
      * связь один пользователь одна корзина
      */
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Bucket bucket;
-
 
 }
