@@ -4,6 +4,7 @@ import com.example.sturbucks_fake.dto.DrinkDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.DrinkServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -45,12 +46,12 @@ public class DrinkController {
 
     @Operation(summary = "Get drink by id", description = "Returns a drink by id. If there is no drink with such id, returns 404.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "drink found",
+            @ApiResponse(responseCode = "200", description = "Drink found",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DrinkDto.class))),
             @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<DrinkDto> getDrinkById(@PathVariable int id) {
+    public ResponseEntity<DrinkDto> getDrinkById(@Parameter(description = "Id of the drink") @PathVariable int id) {
         return ResponseEntity.ok(service.getDrinkById(id));
     }
 
@@ -58,7 +59,8 @@ public class DrinkController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Drink created",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DrinkDto.class))),
-            @ApiResponse(responseCode = "409", description = "Validation failed", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Validation failed", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Drink already exists", content = @Content)
     })
     @PostMapping
     public ResponseEntity<DrinkDto> createDrink(@Validated @RequestBody DrinkDto drinkDto) {
@@ -69,11 +71,11 @@ public class DrinkController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Drink updated",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DrinkDto.class))),
-            @ApiResponse(responseCode = "409", description = "Validation failed", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Drink already exists", content = @Content)
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<DrinkDto> updateDrink(@PathVariable int id, @RequestBody DrinkDto drinkDto) {
+    public ResponseEntity<DrinkDto> updateDrink(@Parameter(description = "Id of the drink") @PathVariable int id, @RequestBody DrinkDto drinkDto) {
         return new ResponseEntity<>(service.updateDrink(id, drinkDto), HttpStatus.OK);
     }
 
@@ -83,7 +85,7 @@ public class DrinkController {
             @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDrink(@PathVariable int id) {
+    public ResponseEntity<Void> deleteDrink(@Parameter(description = "Id of the drink") @PathVariable int id) {
         service.deleteDrink(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

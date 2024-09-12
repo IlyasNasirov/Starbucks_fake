@@ -5,6 +5,7 @@ import com.example.sturbucks_fake.dto.DrinkDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,7 +53,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content)
     })
     @GetMapping("/{id}/drinks")
-    public ResponseEntity<List<DrinkDto>> getAllDrinksByCategory(@PathVariable int id) {
+    public ResponseEntity<List<DrinkDto>> getAllDrinksByCategory(@Parameter(description = "Id of the category") @PathVariable int id) {
         return new ResponseEntity<>(service.getAllDrinksByCategory(id), HttpStatus.OK);
     }
 
@@ -62,7 +63,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "404", description = "Category not found", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
+    public ResponseEntity<Void> deleteCategory(@Parameter(description = "Id of the category") @PathVariable int id) {
         service.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -71,7 +72,7 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Category created",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class))),
-            @ApiResponse(responseCode = "409", description = "Validation failed", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Validation failed", content = @Content)
     })
     @PostMapping
     public ResponseEntity<CategoryDto> createCategory(@Validated @RequestBody CategoryDto categoryDto) {

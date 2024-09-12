@@ -93,6 +93,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addItemToBucket(int userId, int drinkId, int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Drink drink = drinkRepository.findById(drinkId).orElseThrow(() -> new DrinkNotFoundException(drinkId));
         Bucket bucket = user.getBucket();
@@ -103,15 +106,29 @@ public class UserServiceImpl implements UserService {
                 .findFirst();
 
         if (existingItem.isPresent()) {
-            existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
+            if (quantity == 0) {
+                bucket.getItems().remove(existingItem.get());
+            } else {
+                existingItem.get().setQuantity(quantity);
+            }
         } else {
-            BucketItem newItem = new BucketItem();
-            newItem.setDrink(drink);
-            newItem.setQuantity(quantity);
-            newItem.setBucket(bucket);
-            bucket.getItems().add(newItem);
+            if (quantity > 0) {
+                BucketItem newItem = new BucketItem();
+                newItem.setDrink(drink);
+                newItem.setQuantity(quantity);
+                newItem.setBucket(bucket);
+                bucket.getItems().add(newItem);
+            }
         }
         bucketRepository.save(bucket);
+    }
 
+    @Override
+    public void clearBucket(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+
+        Bucket bucket = user.getBucket();
+        bucket.getItems().clear();
+        bucketRepository.save(bucket);
     }
 }

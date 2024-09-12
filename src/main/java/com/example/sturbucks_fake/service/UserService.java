@@ -24,4 +24,6 @@ public interface UserService {
 
     void addItemToBucket(int userId, int drinkId, int quantity);
 
+    void clearBucket(int userId);
+
 }

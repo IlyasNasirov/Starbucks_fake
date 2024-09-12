@@ -4,6 +4,7 @@ import com.example.sturbucks_fake.dto.BucketDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -52,7 +53,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable int id) {
+    public ResponseEntity<UserDto> getUserById(@Parameter(description = "Id of the user") @PathVariable int id) {
         return ResponseEntity.ok(service.getUserById(id));
     }
 
@@ -60,7 +61,8 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "User created",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
-            @ApiResponse(responseCode = "409", description = "Validation failed", content = @Content)
+            @ApiResponse(responseCode = "400", description = "Validation failed", content = @Content),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Validated @RequestBody UserDto userDto) {
@@ -71,11 +73,11 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "User updated",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))),
-            @ApiResponse(responseCode = "409", description = "Validation failed", content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
     })
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@Parameter(description = "Id of the user") @PathVariable int id, @RequestBody UserDto userDto) {
         return new ResponseEntity<>(service.updateUser(id, userDto), HttpStatus.OK);
     }
 
@@ -85,7 +87,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUser(@Parameter(description = "Id of the user") @PathVariable int id) {
         service.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -97,14 +99,32 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/{id}/bucket")
-    public ResponseEntity<BucketDto> getUserBucket(@PathVariable int id) {
+    public ResponseEntity<BucketDto> getUserBucket(@Parameter(description = "Id of the user") @PathVariable int id) {
         return ResponseEntity.ok(service.getUserBucket(id));
     }
 
-    @PutMapping("/{id}/bucket")
-    public ResponseEntity<Void> addItemToBucket(@PathVariable int id, @RequestParam int drinkId, @RequestParam int quantity) {
+    @Operation(summary = "Add item to user's bucket", description = "Adds an item to user's bucket. If there is no user with such id, returns 404.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Item added to bucket"),
+            @ApiResponse(responseCode = "404", description = "User or Drink not found", content = @Content)
+    })
+    @PostMapping("/{id}/bucket")
+    public ResponseEntity<Void> addItemToBucket(@Parameter(description = "Id of the user") @PathVariable int id,
+                                                @Parameter(description = "Id of the drink") @RequestParam int drinkId,
+                                                @Parameter(description = "Quantity") @RequestParam int quantity) {
         service.addItemToBucket(id, drinkId, quantity);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Clear user's bucket", description = "Clears user's bucket. If there is no user with such id, returns 404.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Bucket cleared"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @DeleteMapping("/{id}/bucket")
+    public ResponseEntity<Void> clearBucket(@Parameter(description = "Id of the user") @PathVariable int id) {
+        service.clearBucket(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
