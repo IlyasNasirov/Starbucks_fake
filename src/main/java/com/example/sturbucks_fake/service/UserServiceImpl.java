@@ -124,6 +124,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public BucketDto updateItemInBucket(int userId, int drinkId, int count) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Drink drink = drinkRepository.findById(drinkId).orElseThrow(() -> new DrinkNotFoundException(drinkId));
+        Bucket bucket = user.getBucket();
+
+        Optional<BucketItem> existingItem = bucket.getItems()
+                .stream()
+                .filter(item -> item.getDrink().equals(drink))
+                .findFirst();
+
+        if (existingItem.isPresent()) {
+            if (count > 0) {
+                existingItem.get().setQuantity(existingItem.get().getQuantity() + 1);
+            }
+            if (count < 0) {
+                existingItem.get().setQuantity(existingItem.get().getQuantity() - 1);
+            }
+            if (existingItem.get().getQuantity() <= 0) {
+                bucket.getItems().remove(existingItem.get());
+            }
+        }
+
+        bucketRepository.save(bucket);
+        return bucketMapper.toDto(bucket);
+    }
+
+    @Override
     public void clearBucket(int userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 

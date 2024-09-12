@@ -127,4 +127,18 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "Update item in user's bucket", description = "Updates an item in user's bucket. If there is no user or drink with such id, returns 404.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Item updated in bucket",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = BucketDto.class))),
+            @ApiResponse(responseCode = "404", description = "User or Drink not found", content = @Content)
+    })
+    @PutMapping("/{id}/bucket")
+    public ResponseEntity<BucketDto> updateBucket(@Parameter(description = "Id of the user") @PathVariable int id,
+                                                  @Parameter(description = "Id of the drink") @RequestParam int drinkId,
+                                                  @Parameter(description = "Positive number to increase or negative number to decrease quantity")
+                                                  @RequestParam int count) {
+        return ResponseEntity.ok(service.updateItemInBucket(id, drinkId, count));
+    }
+
 }

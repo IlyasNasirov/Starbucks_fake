@@ -26,4 +26,6 @@ public interface UserService {
 
     void clearBucket(int userId);
 
+    BucketDto updateItemInBucket(int userId, int drinkId, int count);
+
 }
