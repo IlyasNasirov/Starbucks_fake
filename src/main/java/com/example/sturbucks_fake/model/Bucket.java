@@ -29,6 +29,8 @@ public class Bucket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private double totalPrice;
+
     /**
      * Связь один пользователь одна корзина
      */

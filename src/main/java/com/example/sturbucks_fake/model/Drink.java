@@ -42,7 +42,7 @@ public class Drink {
 
     private boolean available;
 
-    private long price;
+    private double price;
 
     /**
      * связь много напитков одна категория

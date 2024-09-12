@@ -12,6 +12,8 @@ public class BucketDto {
 
     private int userId;
 
+    private double totalPrice;
+
     private List<BucketItemDto> items;
 
 }

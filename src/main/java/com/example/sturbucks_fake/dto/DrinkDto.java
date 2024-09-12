@@ -22,7 +22,7 @@ public class DrinkDto {
     private Boolean available;
 
     @Min(value = 1, message = "Price cannot be null")
-    private long price;
+    private double price;
 
     @Min(value = 1, message = "Category id cannot be null")
     private int categoryId;

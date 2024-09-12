@@ -83,13 +83,20 @@ public class UserServiceImpl implements UserService {
         return userMapper.toDto(userRepository.save(user));
     }
 
+    double calculateTotalPrice(Bucket bucket) {
+
+        return bucket.getItems()
+                .stream()
+                .map(item -> item.getDrink().getPrice() * item.getQuantity())
+                .reduce(0.0, Double::sum);
+    }
+
     @Override
-    public BucketDto getUserBucket(int userId) {
+    public BucketDto getUserBucket(int userId) {//надо ли здесь вызывать calculateTotalPrice
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 
         return bucketMapper.toDto(user.getBucket());
     }
-
 
     @Override
     public void addItemToBucket(int userId, int drinkId, int quantity) {
@@ -120,6 +127,7 @@ public class UserServiceImpl implements UserService {
                 bucket.getItems().add(newItem);
             }
         }
+        bucket.setTotalPrice(calculateTotalPrice(bucket));
         bucketRepository.save(bucket);
     }
 
@@ -145,7 +153,7 @@ public class UserServiceImpl implements UserService {
                 bucket.getItems().remove(existingItem.get());
             }
         }
-
+        bucket.setTotalPrice(calculateTotalPrice(bucket));
         bucketRepository.save(bucket);
         return bucketMapper.toDto(bucket);
     }
@@ -156,6 +164,7 @@ public class UserServiceImpl implements UserService {
 
         Bucket bucket = user.getBucket();
         bucket.getItems().clear();
+        bucket.setTotalPrice(calculateTotalPrice(bucket));
         bucketRepository.save(bucket);
     }
 }
