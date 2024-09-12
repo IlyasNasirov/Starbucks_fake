@@ -44,7 +44,7 @@ public class BucketItem {
      */
     @ManyToOne
     @JoinColumn(name = "drink_id")
-    @JsonBackReference
+
     private Drink drink;
 
 }

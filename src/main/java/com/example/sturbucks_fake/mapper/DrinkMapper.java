@@ -8,10 +8,12 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface DrinkMapper {
 
-    @Mapping(target = "category.id", source = "categoryId")
-    Drink toEntity(DrinkDto drinkDto);
-
     @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
     DrinkDto toDto(Drink drink);
+
+    @Mapping(target = "category.id", source = "categoryId")
+    @Mapping(target = "category.name", source = "categoryName")
+    Drink toEntity(DrinkDto drinkDto);
 
 }

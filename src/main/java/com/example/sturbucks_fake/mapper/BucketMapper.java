@@ -5,7 +5,7 @@ import com.example.sturbucks_fake.model.Bucket;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = BucketItemMapper.class)
 public interface BucketMapper {
 
     @Mapping(target = "userId", source = "user.id")

@@ -1,5 +1,6 @@
 package com.example.sturbucks_fake.dto;
 
+import com.example.sturbucks_fake.model.Drink;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,8 +10,6 @@ public class BucketItemDto {
 
     private int quantity;
 
-//    private int userId;
-
-    private int bucketId;
+    private DrinkDto drink;
 
 }

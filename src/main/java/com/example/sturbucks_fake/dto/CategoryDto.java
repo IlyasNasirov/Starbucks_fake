@@ -9,9 +9,9 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class CategoryDto {
 
+    private int id;
+
     @NotNull(message = "Name cannot be null")
     private String name;
-
-
 
 }

@@ -12,6 +12,6 @@ public class BucketDto {
 
     private int userId;
 
-    private List<BucketItem> items;
+    private List<BucketItemDto> items;
 
 }

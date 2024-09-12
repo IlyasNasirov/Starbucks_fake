@@ -9,6 +9,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class UserDto {
 
+    private int id;
+
     @NotNull(message = "firstName cannot be null")
     private String firstName;
 
