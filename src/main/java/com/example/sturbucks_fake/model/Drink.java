@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -43,6 +44,8 @@ public class Drink {
     private boolean available;
 
     private double price;
+
+    private String imageUrl;
 
     /**
      * связь много напитков одна категория
