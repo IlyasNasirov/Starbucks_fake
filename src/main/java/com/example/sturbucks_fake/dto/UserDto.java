@@ -19,4 +19,5 @@ public class UserDto {
 
     @NotNull(message = "username cannot be null")
     private String username;
+
 }

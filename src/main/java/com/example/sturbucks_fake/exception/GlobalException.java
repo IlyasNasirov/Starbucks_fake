@@ -29,6 +29,11 @@ public class GlobalException {
         return buildResponseEntity(ex, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(com.example.sturbucks_fake.exception.AuthenticationException.class)
+    public ResponseEntity<ExceptionResponse> handleIllegalExceptions(AuthenticationException ex) {
+        return buildResponseEntity(ex, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
