@@ -72,8 +72,11 @@ public class DrinkServiceImpl implements DrinkService {
             drink.setCategory(categoryRepository.findById(drinkDto.getCategoryId())
                     .orElseThrow(() -> new CategoryNotFoundException(drinkDto.getCategoryId())));
         }
-        if(drinkDto.getAvailable() != null) {
+        if (drinkDto.getAvailable() != null) {
             drink.setAvailable(drinkDto.getAvailable());
+        }
+        if (drinkDto.getImageUrl() != null) {
+            drink.setImageUrl(drinkDto.getImageUrl());
         }
         return drinkMapper.toDto(drinkRepository.save(drink));
     }

@@ -44,6 +44,8 @@ public class Drink {
 
     private double price;
 
+    private String imageUrl;
+
     /**
      * связь много напитков одна категория
      */
