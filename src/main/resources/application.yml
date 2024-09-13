@@ -11,5 +11,7 @@ spring:
       hibernate:
     show-sql: true
     open-in-view: false
-
-baseUrl: /api/v1
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8080
