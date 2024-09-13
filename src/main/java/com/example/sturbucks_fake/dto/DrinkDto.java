@@ -24,8 +24,6 @@ public class DrinkDto {
     @Min(value = 1, message = "Price cannot be null")
     private double price;
 
-    private String imageUrl;
-
     @Min(value = 1, message = "Category id cannot be null")
     private int categoryId;
 

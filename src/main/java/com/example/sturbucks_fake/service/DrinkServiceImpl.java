@@ -75,9 +75,6 @@ public class DrinkServiceImpl implements DrinkService {
         if(drinkDto.getAvailable() != null) {
             drink.setAvailable(drinkDto.getAvailable());
         }
-        if(drinkDto.getImageUrl() !=null){
-            drink.setImageUrl(drinkDto.getImageUrl());
-        }
         return drinkMapper.toDto(drinkRepository.save(drink));
     }
 
