@@ -57,19 +57,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userMapper.toDto(user);
     }
 
-    @Override
-    public UserDto createUser(UserDto userDto) {
-        User user = userMapper.toEntity(userDto);
-        if (userRepository.existsByUsername(userDto.getUsername())) {
-            throw new DuplicateEntityException("Username already exists");
-        }
-        Bucket bucket = new Bucket();
-        user.setBucket(bucket);
-        bucket.setUser(user);
 
-        userRepository.save(user);
-        return userMapper.toDto(user);
-    }
 
     @Override
     public void deleteUser(int userId) {
@@ -193,6 +181,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                         .collect(Collectors.toList())
         );
     }
+    @Override
+    public UserDto createUser(UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        if (userRepository.existsByUsername(userDto.getUsername())) {
+            throw new DuplicateEntityException("Username already exists");
+        }
+        Bucket bucket = new Bucket();
+        user.setBucket(bucket);
+        bucket.setUser(user);
+
+        userRepository.save(user);
+        return userMapper.toDto(user);
+    }
 
     public UserDto createNewUser(RegistrationUserDto registrationUserDto) {
         if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
@@ -205,7 +206,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = new User();
         user.setUsername(registrationUserDto.getUsername());
         user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
+        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"))));
         userRepository.save(user);
         return userMapper.toDto(user);
     }

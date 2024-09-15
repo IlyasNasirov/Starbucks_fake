@@ -34,12 +34,15 @@ public class JwtTokenUtils {
 
         Date issuedDate=new Date();
         Date expiredDate=new Date(issuedDate.getTime()+jwtLifeTime.toMillis());
+        System.out.println("Issued at: " + issuedDate);
+        System.out.println("Expires at: " + expiredDate);
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(issuedDate)
                 .setExpiration(expiredDate)
-                .signWith(SignatureAlgorithm.HS256,secret)
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -49,6 +52,11 @@ public class JwtTokenUtils {
 
     public List<String> getRoles(String token){
         return getClaimsFromToken(token).get("roles",List.class);
+    }
+
+    public boolean isTokenExpired(String token) {
+        Date expirationDate = getClaimsFromToken(token).getExpiration();
+        return expirationDate.before(new Date());
     }
 
     private Claims getClaimsFromToken(String token){

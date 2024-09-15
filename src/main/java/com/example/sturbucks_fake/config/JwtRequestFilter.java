@@ -33,9 +33,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             try {
+                if (jwtTokenUtils.isTokenExpired(jwt)) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has expired");
+                    return; // Прекращаем выполнение фильтра
+                }
                 username = jwtTokenUtils.getUsername(jwt);
             } catch (ExpiredJwtException | SignatureException e) {
                 e.printStackTrace();
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
+                return;
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

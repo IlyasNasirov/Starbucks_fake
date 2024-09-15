@@ -1,7 +1,9 @@
 package com.example.sturbucks_fake.config;
 
 import com.example.sturbucks_fake.service.UserServiceImpl;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,19 +19,21 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@RequiredArgsConstructor
+
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
-    private final UserServiceImpl userService;
-    private final JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private UserServiceImpl userService;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .cors().disable()
-                .authorizeRequests().antMatchers("/api/v1/drinks").authenticated()
+                .authorizeRequests().antMatchers("/api/v1/drinks/**","/api/v1/categories/**").authenticated()
                 .antMatchers("/api/v1/admin").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()

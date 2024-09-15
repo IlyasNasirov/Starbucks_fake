@@ -20,7 +20,7 @@ public class AuthController {
     private UserServiceImpl userService;
     private AuthService authService;
 
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public ResponseEntity<?> createAuthToken(@RequestBody SignInUserDto authRequest) {
         return ResponseEntity.ok(authService.createAuthToken(authRequest));
     }
