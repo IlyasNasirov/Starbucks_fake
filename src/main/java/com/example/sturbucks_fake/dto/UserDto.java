@@ -1,5 +1,6 @@
 package com.example.sturbucks_fake.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,10 +21,12 @@ public class UserDto {
     @NotNull(message = "username cannot be null")
     private String username;
 
-//    @NotNull(message = "password cannot be null")
+    @NotNull(message = "password cannot be null")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-//    @NotNull(message = "confirmPassword cannot be null")
+    @NotNull(message = "confirmPassword cannot be null")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmPassword;
 
 }

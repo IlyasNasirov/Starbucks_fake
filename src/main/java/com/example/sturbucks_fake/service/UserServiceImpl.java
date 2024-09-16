@@ -196,27 +196,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"))));
 
-
         Bucket bucket = new Bucket();
         user.setBucket(bucket);
         bucket.setUser(user);
 
-        userRepository.save(user);
-        return userMapper.toDto(user);
-    }
-
-    public UserDto createNewUser(RegistrationUserDto registrationUserDto) {
-        if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
-            throw new AuthenticationException("Passwords do not match");
-        }
-        if (userRepository.existsByUsername(registrationUserDto.getUsername())) {
-            throw new DuplicateEntityException("Username already exists");
-        }
-
-        User user = new User();
-        user.setUsername(registrationUserDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
-        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"))));
         userRepository.save(user);
         return userMapper.toDto(user);
     }

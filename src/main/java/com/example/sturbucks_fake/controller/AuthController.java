@@ -1,10 +1,9 @@
 package com.example.sturbucks_fake.controller;
 
-import com.example.sturbucks_fake.dto.RegistrationUserDto;
 import com.example.sturbucks_fake.dto.SignInUserDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.AuthService;
-import com.example.sturbucks_fake.service.UserServiceImpl;
+import com.example.sturbucks_fake.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("${baseUrl}")
 @AllArgsConstructor
 public class AuthController {
 
-    private UserServiceImpl userService;
+    private UserService userService;
     private AuthService authService;
 
     @PostMapping("/login")
@@ -26,9 +25,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegistrationUserDto registrationUserDto) {
-        UserDto userDto = userService.createNewUser(registrationUserDto);
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.createUser(userDto));
     }
 
 }
