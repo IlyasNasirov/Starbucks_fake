@@ -1,8 +1,10 @@
 package com.example.sturbucks_fake.config;
 
+import com.example.sturbucks_fake.service.JwtTokenBlacklistService;
 import com.example.sturbucks_fake.util.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +20,12 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 @Component
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtils jwtTokenUtils;
+
+    private JwtTokenBlacklistService jwtTokenBlacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +39,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 if (jwtTokenUtils.isTokenExpired(jwt)) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has expired");
-                    return; // Прекращаем выполнение фильтра
+                    return;
+                }
+                if (jwtTokenBlacklistService.isTokenBlacklisted(jwt)) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has been blacklisted");
+                    return;
                 }
                 username = jwtTokenUtils.getUsername(jwt);
             } catch (ExpiredJwtException | SignatureException e) {

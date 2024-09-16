@@ -14,7 +14,7 @@ spring:
 
 jwt:
   secret: nk1o31n5hb16h1gjk2fa98a91bk13b2nkn2k31bh2kb410a71230aql1m2
-  lifetime: 1m
+  lifetime: 5m
 
 
 baseUrl: /api/v1

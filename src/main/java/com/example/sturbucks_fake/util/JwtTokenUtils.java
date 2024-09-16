@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,6 +66,14 @@ public class JwtTokenUtils {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public String getTokenFromRequest(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
     }
 
 }
