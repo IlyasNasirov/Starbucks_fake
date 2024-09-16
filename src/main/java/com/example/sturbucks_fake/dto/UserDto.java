@@ -20,4 +20,10 @@ public class UserDto {
     @NotNull(message = "username cannot be null")
     private String username;
 
+//    @NotNull(message = "password cannot be null")
+    private String password;
+
+//    @NotNull(message = "confirmPassword cannot be null")
+    private String confirmPassword;
+
 }

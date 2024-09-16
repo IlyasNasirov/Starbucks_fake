@@ -16,6 +16,7 @@ public class RegistrationUserDto {
     @NotNull(message = "username cannot be null")
     private String username;
 
+    @NotNull(message = "password cannot be null")
     private String password;
 
     private String confirmPassword;

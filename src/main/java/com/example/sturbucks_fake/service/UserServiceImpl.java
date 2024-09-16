@@ -18,6 +18,7 @@ import com.example.sturbucks_fake.repository.DrinkRepository;
 import com.example.sturbucks_fake.repository.RoleRepository;
 import com.example.sturbucks_fake.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,6 +38,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private UserRepository userRepository;
     private BucketRepository bucketRepository;
     private DrinkRepository drinkRepository;
+    @Autowired
     private UserMapper userMapper;
     private BucketMapper bucketMapper;
     private RoleRepository roleRepository;
@@ -56,7 +58,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return userMapper.toDto(user);
     }
-
 
 
     @Override
@@ -181,12 +182,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                         .collect(Collectors.toList())
         );
     }
+
     @Override
     public UserDto createUser(UserDto userDto) {
         User user = userMapper.toEntity(userDto);
         if (userRepository.existsByUsername(userDto.getUsername())) {
             throw new DuplicateEntityException("Username already exists");
         }
+        if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+            throw new AuthenticationException("Passwords do not match");
+        }
+
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Role not found"))));
+
+
         Bucket bucket = new Bucket();
         user.setBucket(bucket);
         bucket.setUser(user);
@@ -199,8 +209,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (!registrationUserDto.getPassword().equals(registrationUserDto.getConfirmPassword())) {
             throw new AuthenticationException("Passwords do not match");
         }
-        if (userRepository.findByUsername(registrationUserDto.getUsername()).isPresent()) {
-            throw new AuthenticationException("User already exists");
+        if (userRepository.existsByUsername(registrationUserDto.getUsername())) {
+            throw new DuplicateEntityException("Username already exists");
         }
 
         User user = new User();
