@@ -33,8 +33,8 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .cors().disable()
-                .authorizeRequests().antMatchers("/api/v1/drinks/**","/api/v1/categories/**").authenticated()
-                .antMatchers("/api/v1/admin").hasRole("ADMIN")
+                .authorizeRequests().antMatchers("/api/v1/drinks/**","/api/v1/categories/**","/api/v1/users/**").authenticated()
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

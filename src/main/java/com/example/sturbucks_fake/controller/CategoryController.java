@@ -39,7 +39,8 @@ public class CategoryController {
     @Operation(summary = "Get all categories", description = "Returns a list of categories")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "List of categories",
-                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class))))
+                    content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class)))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getAllCategories() {
@@ -50,33 +51,13 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "List of drinks",
                     content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DrinkDto.class)))),
-            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/{id}/drinks")
     public ResponseEntity<List<DrinkDto>> getAllDrinksByCategory(@Parameter(description = "Id of the category") @PathVariable int id) {
         return new ResponseEntity<>(service.getAllDrinksByCategory(id), HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete category by id", description = "Deletes a category by id. If there is no category with such id, returns 404.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Category deleted"),
-            @ApiResponse(responseCode = "404", description = "Category not found", content = @Content)
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@Parameter(description = "Id of the category") @PathVariable int id) {
-        service.deleteCategory(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @Operation(summary = "Create new category", description = "Creates a new category")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Category created",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CategoryDto.class))),
-            @ApiResponse(responseCode = "400", description = "Validation failed", content = @Content)
-    })
-    @PostMapping
-    public ResponseEntity<CategoryDto> createCategory(@Validated @RequestBody CategoryDto categoryDto) {
-        return new ResponseEntity<>(service.createCategory(categoryDto), HttpStatus.CREATED);
-    }
 
 }

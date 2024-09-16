@@ -37,8 +37,11 @@ public class DrinkController {
     private DrinkServiceImpl service;
 
     @Operation(summary = "Get all drinks", description = "Returns a list of drinks")
+    @ApiResponses({
     @ApiResponse(responseCode = "200", description = "List of drinks",
-            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DrinkDto.class))))
+            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DrinkDto.class)))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
     @GetMapping
     public ResponseEntity<List<DrinkDto>> getAllDrinks() {
         return ResponseEntity.ok(service.getAllDrinks());
@@ -48,46 +51,12 @@ public class DrinkController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Drink found",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DrinkDto.class))),
-            @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content)
+            @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/{id}")
     public ResponseEntity<DrinkDto> getDrinkById(@Parameter(description = "Id of the drink") @PathVariable int id) {
         return ResponseEntity.ok(service.getDrinkById(id));
-    }
-
-    @Operation(summary = "Create new drink", description = "Creates a new drink")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Drink created",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DrinkDto.class))),
-            @ApiResponse(responseCode = "400", description = "Validation failed", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Drink already exists", content = @Content)
-    })
-    @PostMapping
-    public ResponseEntity<DrinkDto> createDrink(@Validated @RequestBody DrinkDto drinkDto) {
-        return new ResponseEntity<>(service.createDrink(drinkDto), HttpStatus.CREATED);
-    }
-
-    @Operation(summary = "Update drink by id", description = "Updates a drink by id. If there is no drink with such id, returns 404.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Drink updated",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = DrinkDto.class))),
-            @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content),
-            @ApiResponse(responseCode = "409", description = "Drink already exists", content = @Content)
-    })
-    @PatchMapping("/{id}")
-    public ResponseEntity<DrinkDto> updateDrink(@Parameter(description = "Id of the drink") @PathVariable int id, @RequestBody DrinkDto drinkDto) {
-        return new ResponseEntity<>(service.updateDrink(id, drinkDto), HttpStatus.OK);
-    }
-
-    @Operation(summary = "Delete drink by id", description = "Deletes a drink by id. If there is no drink with such id, returns 404.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Drink deleted"),
-            @ApiResponse(responseCode = "404", description = "Drink not found", content = @Content)
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDrink(@Parameter(description = "Id of the drink") @PathVariable int id) {
-        service.deleteDrink(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
