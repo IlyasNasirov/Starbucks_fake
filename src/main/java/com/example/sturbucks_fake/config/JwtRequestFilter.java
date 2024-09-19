@@ -39,6 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 if (jwtTokenUtils.isTokenExpired(jwt)) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has expired");
+                    System.out.println();
                     return;
                 }
                 if (jwtTokenBlacklistService.isTokenBlacklisted(jwt)) {
