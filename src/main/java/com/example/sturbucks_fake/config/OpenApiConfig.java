@@ -20,7 +20,7 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openAPI() throws UnknownHostException {
-
+        //aba
         //Get hostname for foreign connection to swagger
         String host = InetAddress.getLocalHost().getHostName();
 
