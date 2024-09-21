@@ -1,16 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/Starbucks
-    username: postgres
-    password: root
-    driver-class-name: org.postgresql.Driver
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
     show-sql: true
-    open-in-view: false
 
 jwt:
   secret: nk1o31n5hb16h1gjk2fa98a91bk13b2nkn2k31bh2kb410a71230aql1m2

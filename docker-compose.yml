@@ -1,0 +1,30 @@
+services:
+  postgres:
+    container_name: postgres-sql
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: Starbucks
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - my-network
+  spring-boot-app:
+    container_name: starbucks-fake
+    image: starbucks_fake
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - postgres
+
+volumes:
+  postgres:
+
+networks:
+  my-network:
+    driver: bridge
