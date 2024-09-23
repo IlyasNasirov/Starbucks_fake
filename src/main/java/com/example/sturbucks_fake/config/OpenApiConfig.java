@@ -26,7 +26,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .servers(
-                        List.of(new Server().description("base server").url("http://" + host + ":8080")
+                        List.of(new Server().description("base server").url(host + ":8080")
                         )
                 )
                 .info(new Info()
