@@ -22,11 +22,11 @@ public class OpenApiConfig {
     public OpenAPI openAPI() throws UnknownHostException {
         //aba
         //Get hostname for foreign connection to swagger
-        String host = InetAddress.getLocalHost().getHostName();
+        String host = InetAddress.getLocalHost().getHostAddress();
 
         return new OpenAPI()
                 .servers(
-                        List.of(new Server().description("base server").url(host + ":8080")
+                        List.of(new Server().description("base server").url(host)
                         )
                 )
                 .info(new Info()
