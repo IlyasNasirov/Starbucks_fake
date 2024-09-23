@@ -20,13 +20,13 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI openAPI() throws UnknownHostException {
-
+        //aba
         //Get hostname for foreign connection to swagger
         String host = InetAddress.getLocalHost().getHostName();
 
         return new OpenAPI()
                 .servers(
-                        List.of(new Server().description("rinnov34's server").url("http://" + host + ":8080")
+                        List.of(new Server().description("base server").url("https://starbucks-fake-a8d6ed640a8f.herokuapp.com/")
                         )
                 )
                 .info(new Info()
