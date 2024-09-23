@@ -49,11 +49,7 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<?> createAuthToken(@Parameter(description = "User credentials") @RequestBody SignInUserDto authRequest) {
-        String jwt = authService.createAuthToken(authRequest).getToken();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + jwt);
-
-        return ResponseEntity.ok().headers(headers).build();
+        return ResponseEntity.ok(authService.createAuthToken(authRequest));
     }
 
     @Operation(summary = "Register a new user",

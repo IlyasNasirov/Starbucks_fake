@@ -30,8 +30,10 @@ public class AuthService {
             throw new AuthenticationException("Incorrect username or password");
         }
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
+
+        int id=userService.findByUsername(authRequest.getUsername()).get().getId();
         String token = jwtTokenUtils.generateToken(userDetails);
-        return new JwtResponse(token);
+        return new JwtResponse(id,token);
     }
 
 }
