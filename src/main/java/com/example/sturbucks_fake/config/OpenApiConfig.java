@@ -26,7 +26,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .servers(
-                        List.of(new Server().description("base server").url(host)
+                        List.of(new Server().description("base server").url("https://starbucks-fake-a8d6ed640a8f.herokuapp.com/")
                         )
                 )
                 .info(new Info()
