@@ -3,6 +3,7 @@ package com.example.sturbucks_fake.service;
 import com.example.sturbucks_fake.dto.BucketDto;
 import com.example.sturbucks_fake.dto.RegistrationUserDto;
 import com.example.sturbucks_fake.dto.UserDto;
+import com.example.sturbucks_fake.dto.UsersDto;
 import com.example.sturbucks_fake.exception.AuthenticationException;
 import com.example.sturbucks_fake.exception.DrinkNotFoundException;
 import com.example.sturbucks_fake.exception.DuplicateEntityException;
@@ -49,8 +50,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<UserDto> getAllUsers() {
-        return userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList());
+    public UsersDto getAllUsers() {
+        return UsersDto.builder()
+                .users(userRepository.findAll().stream().map(userMapper::toDto).collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -117,7 +120,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             if (quantity == 0) {
                 bucket.getItems().remove(existingItem.get());
             } else {
-                existingItem.get().setQuantity(quantity);
+                existingItem.get().setQuantity(existingItem.get().getQuantity() + quantity);
             }
         } else {
             if (quantity > 0) {
@@ -149,6 +152,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             }
             if (count < 0) {
                 existingItem.get().setQuantity(existingItem.get().getQuantity() - 1);
+            }
+            if (count == 0) {
+                existingItem.get().setQuantity(0);
             }
             if (existingItem.get().getQuantity() <= 0) {
                 bucket.getItems().remove(existingItem.get());

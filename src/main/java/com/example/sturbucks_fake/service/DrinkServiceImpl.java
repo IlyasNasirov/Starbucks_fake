@@ -1,6 +1,7 @@
 package com.example.sturbucks_fake.service;
 
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.dto.DrinksDto;
 import com.example.sturbucks_fake.exception.CategoryNotFoundException;
 import com.example.sturbucks_fake.exception.DrinkNotFoundException;
 import com.example.sturbucks_fake.exception.DuplicateEntityException;
@@ -23,8 +24,10 @@ public class DrinkServiceImpl implements DrinkService {
     private DrinkMapper drinkMapper;
 
     @Override
-    public List<DrinkDto> getAllDrinks() {
-        return drinkRepository.findAll().stream().map(drinkMapper::toDto).collect(Collectors.toList());
+    public DrinksDto getAllDrinks() {
+        return DrinksDto.builder()
+                .drinks(drinkRepository.findAll().stream().map(drinkMapper::toDto).collect(Collectors.toList()))
+                .build();
     }
 
     @Override
@@ -81,8 +84,4 @@ public class DrinkServiceImpl implements DrinkService {
         return drinkMapper.toDto(drinkRepository.save(drink));
     }
 
-    @Override
-    public void deleteAllDrinks() {
-
-    }
 }

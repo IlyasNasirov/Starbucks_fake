@@ -1,6 +1,7 @@
 package com.example.sturbucks_fake.controller;
 
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.dto.DrinksDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.DrinkServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +44,7 @@ public class DrinkController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<DrinkDto>> getAllDrinks() {
+    public ResponseEntity<DrinksDto> getAllDrinks() {
         return ResponseEntity.ok(service.getAllDrinks());
     }
 

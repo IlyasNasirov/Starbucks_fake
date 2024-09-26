@@ -1,8 +1,10 @@
 package com.example.sturbucks_fake.controller;
 
+import com.example.sturbucks_fake.dto.CategoriesDto;
 import com.example.sturbucks_fake.dto.CategoryDto;
 import com.example.sturbucks_fake.dto.DrinkDto;
 import com.example.sturbucks_fake.dto.UserDto;
+import com.example.sturbucks_fake.dto.UsersDto;
 import com.example.sturbucks_fake.service.CategoryService;
 import com.example.sturbucks_fake.service.DrinkServiceImpl;
 import com.example.sturbucks_fake.service.UserService;
@@ -48,7 +50,7 @@ public class AdminController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<UsersDto> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
@@ -122,7 +124,7 @@ public class AdminController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+    public ResponseEntity<CategoriesDto> getAllCategories() {
         return new ResponseEntity<>(categoryService.getAllCategories(), HttpStatus.OK);
     }
 

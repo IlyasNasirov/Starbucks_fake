@@ -1,7 +1,9 @@
 package com.example.sturbucks_fake.controller;
 
+import com.example.sturbucks_fake.dto.CategoriesDto;
 import com.example.sturbucks_fake.dto.CategoryDto;
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.dto.DrinksDto;
 import com.example.sturbucks_fake.dto.UserDto;
 import com.example.sturbucks_fake.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,7 +45,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+    public ResponseEntity<CategoriesDto> getAllCategories() {
         return new ResponseEntity<>(service.getAllCategories(), HttpStatus.OK);
     }
 
@@ -55,7 +57,7 @@ public class CategoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @GetMapping("/{id}/drinks")
-    public ResponseEntity<List<DrinkDto>> getAllDrinksByCategory(@Parameter(description = "Id of the category") @PathVariable int id) {
+    public ResponseEntity<DrinksDto> getAllDrinksByCategory(@Parameter(description = "Id of the category") @PathVariable int id) {
         return new ResponseEntity<>(service.getAllDrinksByCategory(id), HttpStatus.OK);
     }
 

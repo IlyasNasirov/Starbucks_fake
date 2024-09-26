@@ -1,15 +1,17 @@
 package com.example.sturbucks_fake.service;
 
+import com.example.sturbucks_fake.dto.CategoriesDto;
 import com.example.sturbucks_fake.dto.CategoryDto;
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.dto.DrinksDto;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    List<CategoryDto> getAllCategories();
+    CategoriesDto getAllCategories();
 
-    List<DrinkDto> getAllDrinksByCategory(int categoryId);
+    DrinksDto getAllDrinksByCategory(int categoryId);
 
     void deleteCategory(int categoryId);
 

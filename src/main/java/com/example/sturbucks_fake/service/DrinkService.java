@@ -1,12 +1,13 @@
 package com.example.sturbucks_fake.service;
 
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.dto.DrinksDto;
 
 import java.util.List;
 
 public interface DrinkService {
 
-    List<DrinkDto> getAllDrinks();
+    DrinksDto getAllDrinks();
 
     DrinkDto getDrinkById(int drinkId);
 
@@ -15,7 +16,5 @@ public interface DrinkService {
     void deleteDrink(int drinkId);
 
     DrinkDto updateDrink(int drinkId, DrinkDto drinkDto);
-
-    void deleteAllDrinks();
 
 }

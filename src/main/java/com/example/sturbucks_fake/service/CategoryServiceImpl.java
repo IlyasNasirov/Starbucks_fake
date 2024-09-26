@@ -1,7 +1,9 @@
 package com.example.sturbucks_fake.service;
 
+import com.example.sturbucks_fake.dto.CategoriesDto;
 import com.example.sturbucks_fake.dto.CategoryDto;
 import com.example.sturbucks_fake.dto.DrinkDto;
+import com.example.sturbucks_fake.dto.DrinksDto;
 import com.example.sturbucks_fake.exception.CategoryNotFoundException;
 import com.example.sturbucks_fake.exception.DuplicateEntityException;
 import com.example.sturbucks_fake.mapper.CategoryMapper;
@@ -23,14 +25,18 @@ public class CategoryServiceImpl implements CategoryService{
     private DrinkMapper drinkMapper;
 
     @Override
-    public List<CategoryDto> getAllCategories() {
-        return CategoryRepository.findAll().stream().map(categoryMapper::toDto).collect(Collectors.toList());
+    public CategoriesDto getAllCategories() {
+        return CategoriesDto.builder()
+                .categories(CategoryRepository.findAll().stream().map(categoryMapper::toDto).collect(Collectors.toList()))
+                .build();
     }
 
     @Override
-    public List<DrinkDto> getAllDrinksByCategory(int categoryId) {
+    public DrinksDto getAllDrinksByCategory(int categoryId) {
         Category category= CategoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(categoryId));
-        return category.getDrinks().stream().map(drinkMapper::toDto).collect(Collectors.toList());
+        return DrinksDto.builder()
+                .drinks(category.getDrinks().stream().map(drinkMapper::toDto).collect(Collectors.toList()))
+                .build();
     }
 
     public void deleteCategory(int categoryId){
